@@ -10,7 +10,9 @@ size = Vector2(16, 8)
 script = ExtResource("1_yotxw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8, 0)
 shape = SubResource("RectangleShape2D_x0apo")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-8, 0)
 texture = ExtResource("2_1ang0")

@@ -1,7 +1,43 @@
-[gd_scene load_steps=2 format=3 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=6 format=3 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_43f5m"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_7iyax"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0oqm6"]
+normal = Vector2(-1, 0)
+
 [node name="Main" type="Node2D"]
 
+[node name="boundaries" type="Node" parent="."]
+
+[node name="top" type="StaticBody2D" parent="boundaries"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boundaries/top"]
+shape = SubResource("WorldBoundaryShape2D_72s8x")
+
+[node name="bottom" type="StaticBody2D" parent="boundaries"]
+position = Vector2(0, 512)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boundaries/bottom"]
+shape = SubResource("WorldBoundaryShape2D_43f5m")
+
+[node name="left" type="StaticBody2D" parent="boundaries"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boundaries/left"]
+shape = SubResource("WorldBoundaryShape2D_7iyax")
+
+[node name="right" type="StaticBody2D" parent="boundaries"]
+position = Vector2(512, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="boundaries/right"]
+shape = SubResource("WorldBoundaryShape2D_0oqm6")
+
 [node name="Car" parent="." instance=ExtResource("1_72s8x")]
+position = Vector2(256, 128)
