@@ -14,6 +14,19 @@ config/name="Indy 500"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "red",
+"res://common/": "orange",
+"res://config/": "yellow",
+"res://entities/": "green",
+"res://localization/": "teal",
+"res://stages/": "blue",
+"res://ui/": "purple",
+"res://utilities/": "pink"
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
