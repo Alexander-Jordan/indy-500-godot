@@ -1,24 +1,25 @@
 class_name Car extends CharacterBody2D
 
-@export_range(0, 1, 0.0001) var drag: float = 0.0020
-@export var engine_power: float = 500.0
-@export_range(0, 1, 0.01) var friction: float = 0.9
+@export_range(0, 0.01, 0.0001) var drag: float = 0.002
+@export_range(100, 1000, 10) var engine_power: float = 500.0
+@export_range(0, 10, 0.01) var friction: float = 0.9
 @export_enum('p1', 'p2') var player: String = 'p1'
-@export var speed_reverse_max: float = 250.0
+@export_range(50, 500, 5) var speed_reverse_max: float = 250.0
 ## Amount that front wheel turns, in degrees
-@export var steering_angle_degrees: float = 15
-@export var traction_min: float = 1.0
-@export var traction_max: float = 10.0
+@export_range(2, 20, 1) var steering_angle_degrees: float = 15
+@export var traction_curve: Curve
 ## Distance from front to rear wheel.
-@export var wheel_base: float = 10
+@export_range(8, 32, 1) var wheel_base: float = 10
 
+var acceleration_input: float = 0.0
 var speed_min: float = 20
 var speed_max: float = get_max_speed()
-var steering_direction: float = 0.0
+var steering: float = 0.0
+var steering_input: float = 0.0
 
 func _physics_process(delta: float) -> void:
 	var acceleration: Vector2 = get_acceleration()
-	steer()
+	steering = get_steering()
 	calculate_steering(delta)
 	
 	if acceleration.length() < speed_min and velocity.length() < speed_min:
@@ -27,13 +28,17 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
+func _process(_delta: float) -> void:
+	acceleration_input = get_acceleration_input()
+	steering_input = get_steer_input()
+
 func calculate_steering(delta: float) -> void:
 	# Find the wheel positions
 	var rear_wheel: Vector2 = position - transform.x * wheel_base / 2.0
 	var front_wheel: Vector2 = position + transform.x * wheel_base / 2.0
 	# Move the wheel forward
 	rear_wheel += velocity * delta
-	front_wheel += velocity.rotated(steering_direction) * delta
+	front_wheel += velocity.rotated(steering) * delta
 	# Find the new direction vector
 	var new_heading: Vector2 = rear_wheel.direction_to(front_wheel)
 	# Set traction
@@ -48,11 +53,12 @@ func calculate_steering(delta: float) -> void:
 	rotation = new_heading.angle()
 
 func get_acceleration() -> Vector2:
-	var acceleration: Vector2 = Vector2.ZERO
-	var input = -Input.get_axis(player + '_up', player + '_down')
-	acceleration = transform.x * (engine_power * input)
+	var acceleration: Vector2 = transform.x * (engine_power * acceleration_input)
 	acceleration -= get_drag_force() + get_friction_force()
 	return acceleration
+
+func get_acceleration_input() -> float:
+	return -Input.get_axis(player + '_up', player + '_down')
 
 func get_drag_force() -> Vector2:
 	return velocity * velocity.length() * drag
@@ -60,7 +66,7 @@ func get_drag_force() -> Vector2:
 func get_friction_force() -> Vector2:
 	return velocity * friction
 
-## Calculate and get the max speed from drag, friction, and engine_power.
+## Calculate and get the max speed (velocity magnitude) from drag, friction, and engine_power.
 ## It's solving the quadratic equation (a*x^2) + (b*x) - c = 0
 ## a = drag, b = friction, c = engine_power, and x = velocity
 ## It solves it using the quadratic formula
@@ -73,11 +79,13 @@ func get_max_speed() -> float:
 	var velocity_magnitude_max = (-b + discriminant) / (2.0 * a)
 	return velocity_magnitude_max
 
+func get_steering() -> float:
+	return steering_input * deg_to_rad(steering_angle_degrees)
+
+func get_steer_input() -> float:
+	return Input.get_axis(player + '_left', player + '_right')
+
 func get_traction() -> float:
 	var normalized_slip: float = (velocity.length() - speed_min) / (speed_max - speed_min)
 	normalized_slip = clampf(normalized_slip, 0.0, 1.0)
-	return lerpf(traction_max, traction_min, normalized_slip)
-
-func steer() -> void:
-	var turn: float = Input.get_axis(player + '_left', player + '_right') # raw steering input
-	steering_direction = turn * deg_to_rad(steering_angle_degrees)
+	return traction_curve.sample(normalized_slip)
