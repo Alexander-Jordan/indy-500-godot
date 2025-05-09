@@ -16,6 +16,7 @@ normal = Vector2(-1, 0)
 [node name="Main" type="Node2D"]
 
 [node name="boundaries" type="Node" parent="."]
+process_mode = 4
 
 [node name="top" type="StaticBody2D" parent="boundaries"]
 
