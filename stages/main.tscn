@@ -1,6 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
+[ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
@@ -12,11 +13,6 @@ normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0oqm6"]
 normal = Vector2(-1, 0)
-
-[sub_resource type="Curve" id="Curve_72s8x"]
-_limits = [1.0, 10.0, 0.0, 1.0]
-_data = [Vector2(0, 10), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
 
 [node name="Main" type="Node2D"]
 
@@ -46,4 +42,4 @@ shape = SubResource("WorldBoundaryShape2D_0oqm6")
 
 [node name="Car" parent="." instance=ExtResource("1_72s8x")]
 position = Vector2(256, 128)
-traction_curve = SubResource("Curve_72s8x")
+properties = ExtResource("2_43f5m")
