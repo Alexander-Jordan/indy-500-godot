@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CarProperties" load_steps=3 format=3 uid="uid://cmqlwg7dgno5h"]
+
+[ext_resource type="Script" uid="uid://bwkpe4y0j72l7" path="res://entities/car/properties/car_properties.gd" id="1_omk6a"]
+
+[sub_resource type="Curve" id="Curve_72s8x"]
+_limits = [1.0, 10.0, 0.0, 1.0]
+_data = [Vector2(0, 10), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[resource]
+script = ExtResource("1_omk6a")
+drag = 0.002
+engine_power = 500.0
+friction = 0.9
+speed_min = 20.0
+speed_max = 323.293
+speed_reverse_max = 250.0
+steering_angle_degrees_max = 15.0
+traction_curve = SubResource("Curve_72s8x")
+wheel_base = 10.0
+metadata/_custom_type_script = "uid://bwkpe4y0j72l7"

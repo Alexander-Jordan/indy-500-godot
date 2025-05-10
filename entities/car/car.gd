@@ -1,0 +1,67 @@
+class_name Car extends CharacterBody2D
+
+@export_enum('p1', 'p2') var player: String = 'p1'
+@export var properties: CarProperties
+
+var acceleration_input: float = 0.0
+var steering_input: float = 0.0
+
+func _physics_process(delta: float) -> void:
+	properties.acceleration = get_acceleration()
+	properties.steering = get_steering()
+	calculate_steering(delta)
+	
+	if properties.acceleration.length() < properties.speed_min and velocity.length() < properties.speed_min:
+		velocity = Vector2.ZERO
+	velocity += properties.acceleration * delta
+	
+	move_and_slide()
+
+func _process(_delta: float) -> void:
+	acceleration_input = get_acceleration_input()
+	steering_input = get_steer_input()
+
+func calculate_steering(delta: float) -> void:
+	# Find the wheel positions
+	var rear_wheel: Vector2 = position - transform.x * properties.wheel_base / 2.0
+	var front_wheel: Vector2 = position + transform.x * properties.wheel_base / 2.0
+	# Move the wheel forward
+	rear_wheel += velocity * delta
+	front_wheel += velocity.rotated(properties.steering) * delta
+	# Find the new direction vector
+	var new_heading: Vector2 = rear_wheel.direction_to(front_wheel)
+	# Set traction
+	var traction: float = get_traction()
+	# Set the velocity to the new direction, depending on forward or backward
+	var d: float = new_heading.dot(velocity.normalized())
+	if d > 0:
+		velocity = lerp(velocity, new_heading * minf(velocity.length(), properties.speed_max), traction * delta)
+	if d < 0:
+		velocity = lerp(velocity, -new_heading * minf(velocity.length(), properties.speed_reverse_max), traction * delta)
+	# Set the rotation to the new direction
+	rotation = new_heading.angle()
+
+func get_acceleration() -> Vector2:
+	var new_acceleration: Vector2 = transform.x * (properties.engine_power * acceleration_input)
+	new_acceleration -= get_drag_force() + get_friction_force()
+	return new_acceleration
+
+func get_acceleration_input() -> float:
+	return -Input.get_axis(player + '_up', player + '_down')
+
+func get_drag_force() -> Vector2:
+	return velocity * velocity.length() * properties.drag
+
+func get_friction_force() -> Vector2:
+	return velocity * properties.friction
+
+func get_steering() -> float:
+	return steering_input * deg_to_rad(properties.steering_angle_degrees_max)
+
+func get_steer_input() -> float:
+	return Input.get_axis(player + '_left', player + '_right')
+
+func get_traction() -> float:
+	var normalized_slip: float = (velocity.length() - properties.speed_min) / (properties.speed_max - properties.speed_min)
+	normalized_slip = clampf(normalized_slip, 0.0, 1.0)
+	return properties.traction_curve.sample(normalized_slip)
