@@ -1,12 +1,26 @@
+@tool
 class_name Car extends CharacterBody2D
 
 @export_enum('p1', 'p2') var player: String = 'p1'
 @export var properties: CarProperties
+@export var sprite: CompressedTexture2D:
+	set(s):
+		if s == sprite:
+			return
+		sprite = s
+		if sprite_2d:
+			sprite_2d.texture = sprite
+
+@onready var sprite_2d: Sprite2D = $Sprite2D
 
 var acceleration_input: float = 0.0
 var steering_input: float = 0.0
 
 func _physics_process(delta: float) -> void:
+	# Don't run any code from this function in the editor
+	if Engine.is_editor_hint():
+		return
+	
 	properties.acceleration = get_acceleration()
 	properties.steering = get_steering()
 	calculate_steering(delta)
@@ -18,8 +32,19 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _process(_delta: float) -> void:
+	# Don't run any code from this function in the editor
+	if Engine.is_editor_hint():
+		return
+	
 	acceleration_input = get_acceleration_input()
 	steering_input = get_steer_input()
+
+func _ready() -> void:
+	# Don't run any code from this function in the editor
+	if Engine.is_editor_hint():
+		return
+	
+	sprite_2d.texture = sprite
 
 func calculate_steering(delta: float) -> void:
 	# Find the wheel positions

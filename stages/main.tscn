@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=9 format=3 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
+[ext_resource type="Texture2D" uid="uid://dyv5mbbaulhqp" path="res://entities/car/car_red.png" id="3_0oqm6"]
+[ext_resource type="Texture2D" uid="uid://x8u2oh50r6uw" path="res://entities/car/car_blue.png" id="4_fejr8"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
@@ -41,5 +43,12 @@ position = Vector2(512, 0)
 shape = SubResource("WorldBoundaryShape2D_0oqm6")
 
 [node name="Car" parent="." instance=ExtResource("1_72s8x")]
-position = Vector2(256, 128)
+position = Vector2(256, 102)
 properties = ExtResource("2_43f5m")
+sprite = ExtResource("3_0oqm6")
+
+[node name="Car2" parent="." instance=ExtResource("1_72s8x")]
+position = Vector2(256, 128)
+player = "p2"
+properties = ExtResource("2_43f5m")
+sprite = ExtResource("4_fejr8")
