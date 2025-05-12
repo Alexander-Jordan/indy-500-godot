@@ -21,9 +21,8 @@ var checkpoint: Checkpoint = null:
 		if c.order_id == last.order_id + 1 or c.order_id == last.order_id - 1:
 			checkpoint = c
 			checkpoint_changed.emit(c)
-			var current_lap: Lap = laps[-1]
-			if c.order_id == current_lap.sectors[-1].end_checkpoint_order_id:
-				current_lap.add_sector(c.order_id, c.order_id + 1)
+			if c.order_id == lap_current.sectors[-1].end_checkpoint_order_id:
+				lap_current.add_sector(c.order_id, c.order_id + 1)
 			return
 	
 		# not the next checkpoint by the normal order id, but by the secondary
