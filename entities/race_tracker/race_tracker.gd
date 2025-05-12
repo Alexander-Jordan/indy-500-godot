@@ -27,10 +27,6 @@ var checkpoint: Checkpoint = null:
 			laps.new_lap()
 var laps: Laps = Laps.new()
 
-signal lap_ended(lap: Lap, lap_count: int)
-signal lap_started(lap: int)
-signal race_over
-
 func _process(delta: float) -> void:
 	if laps.current:
 		laps.current.time_tick(delta)
