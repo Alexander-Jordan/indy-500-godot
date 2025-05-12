@@ -47,13 +47,13 @@ func _ready() -> void:
 	
 	sprite_2d.texture = sprite
 	
-	race_tracker.lap_ended.connect(func(lap: Lap, lap_count: int):
+	race_tracker.laps.lap_ended.connect(func(lap: Lap, lap_count: int):
 		print('%s just ended lap %s!' % [player, str(lap_count)])
 		for index in lap.sectors.size():
 			print('Sector %s: %s seconds' % [index + 1, lap.sectors[index].time])
 		print('Lap: %s seconds' % lap.time)
 	)
-	race_tracker.lap_started.connect(func(lap: int): print('%s just started lap %s!' % [player, str(lap)]))
+	race_tracker.laps.lap_started.connect(func(lap: int): print('%s just started lap %s!' % [player, str(lap)]))
 
 func calculate_steering(delta: float) -> void:
 	# Find the wheel positions

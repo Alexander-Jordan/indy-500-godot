@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
 [ext_resource type="Texture2D" uid="uid://dyv5mbbaulhqp" path="res://entities/car/car_red.png" id="3_0oqm6"]
 [ext_resource type="Texture2D" uid="uid://x8u2oh50r6uw" path="res://entities/car/car_blue.png" id="4_fejr8"]
-[ext_resource type="Script" uid="uid://c0m5wq5p2kki7" path="res://entities/race_tracker/checkpoint.gd" id="6_5sjox"]
+[ext_resource type="Script" uid="uid://c0m5wq5p2kki7" path="res://entities/race_tracker/checkpoint/checkpoint.gd" id="6_5sjox"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
