@@ -47,6 +47,7 @@ func _ready() -> void:
 	
 	sprite_2d.texture = sprite
 	
+	race_tracker.laps.finished.connect(func(): print('%s finished the race!' % player))
 	race_tracker.laps.lap_ended.connect(func(lap: Lap, lap_count: int):
 		print('%s just ended lap %s!' % [player, str(lap_count)])
 		for index in lap.sectors.size():

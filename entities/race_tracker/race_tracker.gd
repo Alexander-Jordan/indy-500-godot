@@ -1,16 +1,15 @@
 class_name RaceTracker extends Area2D
 
-@export var laps_max: int = 0
-
 var checkpoint: Checkpoint = null:
 	set(c):
-		if laps.current == null:
+		if checkpoint != null and laps.current == null:
 			return
 		
 		# no previous checkpoint is set
 		if checkpoint == null:
 			if c.order_id == 0: # only set it if it's the first
 				checkpoint = c
+				laps.new_lap()
 			return # otherwise, just ignore it
 		
 		# the new checkpoint is the next checkpoint in order
@@ -24,7 +23,7 @@ var checkpoint: Checkpoint = null:
 		# this means that a lap has been completed
 		if c.order_id_secondary == checkpoint.order_id + 1:
 			checkpoint = c
-			laps.new_lap()
+			laps.end_lap()
 var laps: Laps = Laps.new()
 
 func _process(delta: float) -> void:
@@ -36,3 +35,4 @@ func _ready() -> void:
 		if area is Checkpoint:
 			checkpoint = area
 	)
+	GM.race_settings.laps_changed.connect(func(number_of_laps: int): laps.max_laps = number_of_laps)
