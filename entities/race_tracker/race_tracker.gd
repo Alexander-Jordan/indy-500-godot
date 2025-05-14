@@ -20,7 +20,7 @@ var checkpoint: Checkpoint = null:
 		# OR the new checkpoint is the previous checkpoint in order
 		if c.order_id == checkpoint.order_id + 1 or c.order_id == checkpoint.order_id - 1:
 			checkpoint = c
-			laps.current.add_sector_from_checkpoint(c)
+			laps.current.sectors.new_sector(c)
 			return
 	
 		# not the next checkpoint by the normal order id, but by the secondary

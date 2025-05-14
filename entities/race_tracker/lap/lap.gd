@@ -1,13 +1,38 @@
 class_name Lap extends Resource
 
-var sectors: Array[Sector] = [Sector.new()]
-var time: float
+var finished: bool = false:
+	set(f):
+		if f == finished:
+			return
+		finished = f
+		if f:
+			sectors.current = null
+var sectors: Sectors = Sectors.new()
+var time: float = 0.0
 
-func add_sector_from_checkpoint(checkpoint: Checkpoint) -> void:
-	if checkpoint.order_id != sectors[-1].end_checkpoint_order_id:
-		return
-	sectors.append(Sector.new(checkpoint.order_id, checkpoint.order_id + 1))
+func _to_string() -> String:
+	var minutes: int = int(time / 60)
+	var seconds: int = int(int(time) % 60)
+	var milliseconds: int = int((time - int(time)) * 1000)
+	
+	return "%d:%02d.%03d [%s]" % [minutes, seconds, milliseconds, sectors]
+
+func set_from_other(other: Lap) -> Lap:
+	finished = other.finished
+	sectors.set_from_other(other.sectors)
+	time = other.time
+	return self
 
 func time_tick(delta: float) -> void:
+	if finished:
+		return
+	
 	time += delta
-	sectors[-1].time_tick(delta)
+	sectors.time_tick(delta)
+
+func to_optimal_lap(other: Lap) -> Lap:
+	if other == null:
+		return self
+	sectors.to_best_sectors(other.sectors)
+	time = sectors.get_time()
+	return self
