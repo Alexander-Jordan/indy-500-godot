@@ -1,8 +1,8 @@
 class_name RaceSettings extends Resource
 
 enum Mode {
-	TIME_TRIAL,
 	RACE,
+	TIME_TRIAL,
 }
 
 var laps: int = 0:
@@ -11,7 +11,7 @@ var laps: int = 0:
 			return
 		laps = l
 		laps_changed.emit(l)
-var mode: Mode = Mode.TIME_TRIAL:
+var mode: Mode = Mode.RACE:
 	set(m):
 		if !Mode.values().has(m) or m == mode:
 			return
@@ -20,3 +20,7 @@ var mode: Mode = Mode.TIME_TRIAL:
 
 signal laps_changed(laps: int)
 signal mode_changed(mode: Mode)
+
+func set_variables_from_other(other: RaceSettings) -> void:
+	laps = other.laps
+	mode = other.mode

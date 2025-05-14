@@ -1,27 +1,40 @@
 class_name UIRaceSettings extends Control
 
-@onready var button_back: Button = $MarginContainer/VBoxContainer/HBoxContainer/button_back
-@onready var button_save: Button = $MarginContainer/VBoxContainer/HBoxContainer/button_save
+@onready var button_cancel: Button = $MarginContainer/VBoxContainer/HBoxContainer/button_cancel
+@onready var button_confirm: Button = $MarginContainer/VBoxContainer/HBoxContainer/button_confirm
 @onready var options_button_mode: OptionButton = $MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/options_button_mode
 @onready var spin_box_laps: SpinBox = $MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/spin_box_laps
 
+var race_settings_previous: RaceSettings = RaceSettings.new()
+
 func _ready() -> void:
-	button_back.pressed.connect(hide)
-	button_save.pressed.connect(save_settings)
+	button_cancel.pressed.connect(cancel_settings)
+	button_confirm.pressed.connect(confirm_settings)
+	options_button_mode.item_selected.connect(func(index: int): GM.race_settings.mode = index)
+	spin_box_laps.value_changed.connect(func(value: float): GM.race_settings.laps = int(value))
+	
+	race_settings_previous.set_variables_from_other(GM.race_settings)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed('dev_race_settings_toggle'):
 		if visible:
-			hide()
+			cancel_settings()
 		else:
-			setup_from_gm()
-			show()
+			open_settings()
 
-func save_settings() -> void:
-	GM.race_settings.laps = int(spin_box_laps.value)
-	GM.race_settings.mode = options_button_mode.selected
+func cancel_settings() -> void:
+	GM.race_settings.set_variables_from_other(race_settings_previous)
 	hide()
+	GM.state = GM.State.RACING
 
-func setup_from_gm() -> void:
+func confirm_settings() -> void:
+	race_settings_previous.set_variables_from_other(GM.race_settings)
+	GM.reset.emit()
+	hide()
+	GM.state = GM.State.RACING
+
+func open_settings() -> void:
+	GM.state = GM.State.NONE
 	options_button_mode.selected = GM.race_settings.mode
 	spin_box_laps.value = GM.race_settings.laps
+	show()

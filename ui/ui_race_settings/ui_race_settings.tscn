@@ -57,9 +57,9 @@ layout_mode = 2
 size_flags_horizontal = 6
 selected = 0
 item_count = 2
-popup/item_0/text = "TIME TRIAL"
+popup/item_0/text = "RACE"
 popup/item_0/id = 0
-popup/item_1/text = "RACE"
+popup/item_1/text = "TIME TRIAL"
 popup/item_1/id = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
@@ -84,13 +84,12 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 
-[node name="button_back" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="button_cancel" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
-text = "BACK"
+text = "CANCEL"
 
-[node name="button_save" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="button_confirm" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "SAVE"
+text = "CONFIRM"

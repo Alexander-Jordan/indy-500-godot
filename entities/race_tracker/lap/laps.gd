@@ -20,3 +20,7 @@ func new_lap() -> void:
 	current = Lap.new()
 	all.append(current)
 	lap_started.emit(all.size())
+
+func reset() -> void:
+	all = []
+	current = null

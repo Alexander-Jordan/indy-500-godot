@@ -2,6 +2,10 @@ class_name RaceTracker extends Area2D
 
 var checkpoint: Checkpoint = null:
 	set(c):
+		if c == null:
+			checkpoint = c
+			return
+		
 		if checkpoint != null and laps.current == null:
 			return
 		
@@ -36,3 +40,7 @@ func _ready() -> void:
 			checkpoint = area
 	)
 	GM.race_settings.laps_changed.connect(func(number_of_laps: int): laps.max_laps = number_of_laps)
+
+func reset() -> void:
+	laps.reset()
+	checkpoint = null

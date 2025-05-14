@@ -18,17 +18,21 @@ normal = Vector2(1, 0)
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0oqm6"]
 normal = Vector2(-1, 0)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5sjox"]
-size = Vector2(20, 200)
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_5sjox"]
+a = Vector2(0, -100)
+b = Vector2(0, 100)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_byaf2"]
-size = Vector2(200, 20)
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_byaf2"]
+a = Vector2(-100, 0)
+b = Vector2(100, 0)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xbtqd"]
-size = Vector2(20, 200)
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_xbtqd"]
+a = Vector2(0, -100)
+b = Vector2(0, 100)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_85ei1"]
-size = Vector2(200, 20)
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_85ei1"]
+a = Vector2(-100, 0)
+b = Vector2(100, 0)
 
 [node name="Main" type="Node2D"]
 
@@ -57,12 +61,12 @@ position = Vector2(512, 0)
 shape = SubResource("WorldBoundaryShape2D_0oqm6")
 
 [node name="Car" parent="." instance=ExtResource("1_72s8x")]
-position = Vector2(256, 102)
+position = Vector2(250, 102)
 properties = ExtResource("2_43f5m")
 sprite = ExtResource("3_0oqm6")
 
 [node name="Car2" parent="." instance=ExtResource("1_72s8x")]
-position = Vector2(256, 128)
+position = Vector2(250, 128)
 player = "p2"
 properties = ExtResource("2_43f5m")
 sprite = ExtResource("4_fejr8")
@@ -77,7 +81,7 @@ metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint"]
 position = Vector2(0, 100)
-shape = SubResource("RectangleShape2D_5sjox")
+shape = SubResource("SegmentShape2D_5sjox")
 
 [node name="Checkpoint2" type="Area2D" parent="checkpoints"]
 position = Vector2(512, 256)
@@ -87,7 +91,7 @@ metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint2"]
 position = Vector2(-100, 0)
-shape = SubResource("RectangleShape2D_byaf2")
+shape = SubResource("SegmentShape2D_byaf2")
 
 [node name="Checkpoint3" type="Area2D" parent="checkpoints"]
 position = Vector2(256, 512)
@@ -97,7 +101,7 @@ metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint3"]
 position = Vector2(0, -100)
-shape = SubResource("RectangleShape2D_xbtqd")
+shape = SubResource("SegmentShape2D_xbtqd")
 
 [node name="Checkpoint4" type="Area2D" parent="checkpoints"]
 position = Vector2(0, 256)
@@ -107,9 +111,8 @@ metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint4"]
 position = Vector2(100, 0)
-shape = SubResource("RectangleShape2D_85ei1")
+shape = SubResource("SegmentShape2D_85ei1")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UIRaceSettings" parent="CanvasLayer" instance=ExtResource("6_byaf2")]
-visible = false
