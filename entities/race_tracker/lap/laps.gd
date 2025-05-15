@@ -9,7 +9,7 @@ var optimal: Lap = null
 signal best_changed(best: Lap)
 signal finished(laps: Laps)
 signal lap_ended(lap: Lap, number: int)
-signal lap_started(number: int)
+signal lap_started(lap: Lap, number: int)
 signal optimal_changed(optimal: Lap)
 
 func _to_string() -> String:
@@ -36,7 +36,7 @@ func end_lap() -> void:
 func new_lap() -> void:
 	current = Lap.new()
 	all.append(current)
-	lap_started.emit(all.size())
+	lap_started.emit(current, all.size())
 
 func reset() -> void:
 	all = []

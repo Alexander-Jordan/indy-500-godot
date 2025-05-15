@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=16 format=3 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://x8u2oh50r6uw" path="res://entities/car/car_blue.png" id="4_fejr8"]
 [ext_resource type="Script" uid="uid://c0m5wq5p2kki7" path="res://entities/race_tracker/checkpoint/checkpoint.gd" id="6_5sjox"]
 [ext_resource type="PackedScene" uid="uid://certwioknxlwh" path="res://ui/ui_race_settings/ui_race_settings.tscn" id="6_byaf2"]
+[ext_resource type="PackedScene" uid="uid://c5g83xfmsr2l5" path="res://ui/laps/ui_laps.tscn" id="7_byaf2"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
@@ -116,3 +117,16 @@ shape = SubResource("SegmentShape2D_85ei1")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UIRaceSettings" parent="CanvasLayer" instance=ExtResource("6_byaf2")]
+
+[node name="UILaps" parent="CanvasLayer" node_paths=PackedStringArray("car") instance=ExtResource("7_byaf2")]
+car = NodePath("../../Car")
+
+[node name="UILaps2" parent="CanvasLayer" node_paths=PackedStringArray("car") instance=ExtResource("7_byaf2")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_right = 0.0
+grow_horizontal = 0
+car = NodePath("../../Car2")
+disable_time_trial = true

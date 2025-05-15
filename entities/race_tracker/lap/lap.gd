@@ -15,7 +15,7 @@ func _to_string() -> String:
 	var seconds: int = int(int(time) % 60)
 	var milliseconds: int = int((time - int(time)) * 1000)
 	
-	return "%d:%02d.%03d [%s]" % [minutes, seconds, milliseconds, sectors]
+	return "%d:%02d.%03d" % [minutes, seconds, milliseconds]
 
 func set_from_other(other: Lap) -> Lap:
 	finished = other.finished

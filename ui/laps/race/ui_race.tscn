@@ -1,0 +1,59 @@
+[gd_scene load_steps=3 format=3 uid="uid://y7lmrlgsrfle"]
+
+[ext_resource type="Theme" uid="uid://cfpqv3k0la1oe" path="res://base_theme.tres" id="1_vhtr8"]
+[ext_resource type="Script" uid="uid://b6xcnbsb0ihlu" path="res://ui/laps/race/ui_race.gd" id="2_j6xho"]
+
+[node name="UIRace" type="PanelContainer"]
+custom_minimum_size = Vector2(128, 0)
+offset_right = 128.0
+offset_bottom = 48.0
+theme = ExtResource("1_vhtr8")
+script = ExtResource("2_j6xho")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "POS"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="label_position" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "LAP"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="label_lap_number" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
