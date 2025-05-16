@@ -28,7 +28,12 @@ var checkpoint: Checkpoint = null:
 		if c.order_id_secondary == checkpoint.order_id + 1:
 			checkpoint = c
 			laps.end_lap()
-var laps: Laps = Laps.new()
+var laps: Laps = Laps.new():
+	set(l):
+		laps = l
+		laps_changed.emit(l)
+
+signal laps_changed(laps: Laps)
 
 func _process(delta: float) -> void:
 	if laps.current:
@@ -42,5 +47,6 @@ func _ready() -> void:
 	GM.race_settings.laps_changed.connect(func(number_of_laps: int): laps.max_laps = number_of_laps)
 
 func reset() -> void:
-	laps.reset()
+	laps = Laps.new()
+	laps.max_laps = GM.race_settings.laps
 	checkpoint = null

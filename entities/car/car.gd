@@ -57,15 +57,6 @@ func _ready() -> void:
 				enable()
 	)
 	GM.reset.connect(reset)
-	race_tracker.laps.best_changed.connect(func(best: Lap): print('[%s] Best: ' % [player], best))
-	race_tracker.laps.finished.connect(func(laps: Laps): print('[%s] Finished!\n' % player, laps))
-	race_tracker.laps.lap_ended.connect(func(lap: Lap, lap_count: int):
-		print('[%s] L%s: ' % [player, str(lap_count)], lap)
-		for i in lap.sectors.all.size():
-			print('S%s: %s' % [i + 1, lap.sectors.all[i]])
-	)
-	race_tracker.laps.lap_started.connect(func(_lap: Lap, number: int): print('[%s] L%s started' % [player, str(number)]))
-	race_tracker.laps.optimal_changed.connect(func(optimal: Lap): print('[%s] Optimal:' % [player], optimal))
 
 func calculate_steering(delta: float) -> void:
 	# Find the wheel positions
