@@ -6,6 +6,8 @@ var finished: bool = false:
 			return
 		finished = f
 		if f:
+			sectors.sector_ended.emit(sectors.current, sectors.all.size())
+			sectors.current.finished = true
 			sectors.current = null
 var sectors: Sectors = Sectors.new()
 var time: float = 0.0

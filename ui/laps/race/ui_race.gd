@@ -20,11 +20,14 @@ var laps: Laps = null:
 	get:
 		return laps if !disabled else null
 
-func laps_signals_connect(laps: Laps) -> void:
-	laps.lap_started.connect(on_lap_started)
+func laps_signals_connect(new_laps: Laps) -> void:
+	new_laps.lap_started.connect(on_lap_started)
 
-func laps_signals_disconnect(laps: Laps) -> void:
-	laps.lap_started.disconnect(on_lap_started)
+func laps_signals_disconnect(old_laps: Laps) -> void:
+	old_laps.lap_started.disconnect(on_lap_started)
 
-func on_lap_started(lap: Lap, number: int) -> void:
+func on_lap_started(_lap: Lap, number: int) -> void:
+	if disabled:
+		return
+	
 	label_lap_number.text = str(number)

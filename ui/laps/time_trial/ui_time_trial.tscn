@@ -1,9 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bd0y5dvodqn2e"]
+[gd_scene load_steps=6 format=3 uid="uid://bd0y5dvodqn2e"]
 
 [ext_resource type="Theme" uid="uid://cfpqv3k0la1oe" path="res://base_theme.tres" id="1_lvk6g"]
 [ext_resource type="Script" uid="uid://dja77sui7370y" path="res://ui/laps/time_trial/ui_time_trial.gd" id="2_ceytw"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irdm7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ceytw"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bsym"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3vbl"]
+bg_color = Color(0, 0, 0, 0)
 
 [node name="UITimeTrial" type="PanelContainer"]
 custom_minimum_size = Vector2(128, 0)
@@ -11,6 +18,10 @@ offset_right = 128.0
 offset_bottom = 67.0
 theme = ExtResource("1_lvk6g")
 script = ExtResource("2_ceytw")
+color_sector_best = Color(1, 0, 1, 1)
+color_sector_default = Color(0, 0, 0, 0)
+color_sector_faster = Color(0, 1, 0, 1)
+color_sector_slower = Color(1, 1, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -28,7 +39,7 @@ layout_mode = 2
 [node name="panelcontainer_sector1" type="PanelContainer" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_irdm7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ceytw")
 
 [node name="label_sector1" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector1"]
 layout_mode = 2
@@ -41,7 +52,7 @@ uppercase = true
 [node name="panelcontainer_sector2" type="PanelContainer" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_irdm7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_1bsym")
 
 [node name="label_sector2" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector2"]
 layout_mode = 2
@@ -54,7 +65,7 @@ uppercase = true
 [node name="panelcontainer_sector3" type="PanelContainer" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_irdm7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_k3vbl")
 
 [node name="label_sector3" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector3"]
 layout_mode = 2
@@ -117,3 +128,6 @@ text = "00:00.000"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
+
+[node name="timer_await_lap" type="Timer" parent="."]
+one_shot = true
