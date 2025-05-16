@@ -17,11 +17,11 @@ func _to_string() -> String:
 		s += 'S%s: %s' % [index + 1, all[index]]
 	return s
 
-func get_time() -> float:
-	var time = 0.0
+func get_duration() -> float:
+	var duration = 0.0
 	for sector in all:
-		time += sector.time
-	return time
+		duration += sector.duration
+	return duration
 
 func new_sector(checkpoint: Checkpoint = null) -> void:
 	if current and checkpoint and current.end_checkpoint_order_id != checkpoint.order_id:
@@ -29,7 +29,9 @@ func new_sector(checkpoint: Checkpoint = null) -> void:
 	if current:
 		current.finished = true
 		sector_ended.emit(current, all.size())
-	current = Sector.new()
+	var next: Sector = Sector.new()
+	next.time = current.time if current != null else 0.0
+	current = next
 	if checkpoint:
 		current.start_checkpoint_order_id = checkpoint.order_id
 	all.append(current)

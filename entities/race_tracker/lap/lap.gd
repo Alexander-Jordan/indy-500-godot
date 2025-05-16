@@ -36,5 +36,5 @@ func to_optimal_lap(other: Lap) -> Lap:
 	if other == null:
 		return self
 	sectors.to_best_sectors(other.sectors)
-	time = sectors.get_time()
+	time = sectors.get_duration()
 	return self

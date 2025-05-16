@@ -1,5 +1,6 @@
 class_name Sector extends Resource
 
+var duration: float = 0.0
 var finished: bool = false
 var end_checkpoint_order_id: int = 1:
 	set(e):
@@ -22,6 +23,7 @@ func _to_string() -> String:
 	return "%d:%02d.%03d" % [minutes, seconds, milliseconds]
 
 func set_from_other(other: Sector) -> Sector:
+	duration = other.duration
 	finished = other.finished
 	start_checkpoint_order_id = other.start_checkpoint_order_id
 	time = other.time
@@ -31,6 +33,7 @@ func time_tick(delta: float) -> void:
 	if finished:
 		return
 	
+	duration += delta
 	time += delta
 
 func to_best_sector(other: Sector) -> Sector:
