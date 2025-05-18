@@ -1,19 +1,16 @@
 class_name Sector extends Resource
 
+var checkpoint_end: Checkpoint
+var checkpoint_start: Checkpoint
 var duration: float = 0.0
-var finished: bool = false
-var end_checkpoint_order_id: int = 1:
-	set(e):
-		end_checkpoint_order_id = start_checkpoint_order_id
-	get:
-		return start_checkpoint_order_id + 1
-var start_checkpoint_order_id: int = 0:
-	set(s):
-		if s < 0 or s == start_checkpoint_order_id:
-			return
-		start_checkpoint_order_id = s
-		end_checkpoint_order_id = s + 1
+var has_finished: bool = false
 var time: float = 0.0
+
+signal finished(sector: Sector)
+
+func _init(start: Checkpoint = null, end: Checkpoint = null):
+	checkpoint_end = end
+	checkpoint_start = start
 
 func _to_string() -> String:
 	var minutes: int = int(time / 60)
@@ -22,15 +19,21 @@ func _to_string() -> String:
 	
 	return "%d:%02d.%03d" % [minutes, seconds, milliseconds]
 
+func try_end_sector(start: Checkpoint, end: Checkpoint) -> void:
+	if start != checkpoint_start or end != checkpoint_end:
+		return
+	has_finished = true
+	finished.emit(self)
+
 func set_from_other(other: Sector) -> Sector:
 	duration = other.duration
-	finished = other.finished
-	start_checkpoint_order_id = other.start_checkpoint_order_id
+	checkpoint_end = other.checkpoint_end
+	checkpoint_start = other.checkpoint_start
 	time = other.time
 	return self
 
 func time_tick(delta: float) -> void:
-	if finished:
+	if has_finished:
 		return
 	
 	duration += delta

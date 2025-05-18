@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=16 format=3 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
 [ext_resource type="Texture2D" uid="uid://dyv5mbbaulhqp" path="res://entities/car/car_red.png" id="3_0oqm6"]
 [ext_resource type="Texture2D" uid="uid://x8u2oh50r6uw" path="res://entities/car/car_blue.png" id="4_fejr8"]
-[ext_resource type="Script" uid="uid://c0m5wq5p2kki7" path="res://entities/race_tracker/checkpoint/checkpoint.gd" id="6_5sjox"]
+[ext_resource type="Script" uid="uid://lj2f1x02srbw" path="res://utilities/checkpoints/checkpoints.gd" id="5_xbtqd"]
+[ext_resource type="Script" uid="uid://c0m5wq5p2kki7" path="res://utilities/checkpoints/checkpoint.gd" id="6_5sjox"]
 [ext_resource type="PackedScene" uid="uid://certwioknxlwh" path="res://ui/ui_race_settings/ui_race_settings.tscn" id="6_byaf2"]
 [ext_resource type="PackedScene" uid="uid://c5g83xfmsr2l5" path="res://ui/laps/ui_laps.tscn" id="7_byaf2"]
 
@@ -66,12 +67,13 @@ player = "p2"
 properties = ExtResource("2_43f5m")
 sprite = ExtResource("4_fejr8")
 
-[node name="checkpoints" type="Node" parent="."]
+[node name="checkpoints" type="Node2D" parent="."]
+script = ExtResource("5_xbtqd")
+metadata/_custom_type_script = "uid://lj2f1x02srbw"
 
 [node name="Checkpoint" type="Area2D" parent="checkpoints"]
 position = Vector2(256, 0)
 script = ExtResource("6_5sjox")
-order_id_secondary = 3
 metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint"]
@@ -81,7 +83,6 @@ shape = SubResource("SegmentShape2D_5sjox")
 [node name="Checkpoint2" type="Area2D" parent="checkpoints"]
 position = Vector2(512, 512)
 script = ExtResource("6_5sjox")
-order_id = 1
 metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint2"]
@@ -90,7 +91,6 @@ shape = SubResource("SegmentShape2D_byaf2")
 [node name="Checkpoint3" type="Area2D" parent="checkpoints"]
 position = Vector2(0, 512)
 script = ExtResource("6_5sjox")
-order_id = 2
 metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint3"]

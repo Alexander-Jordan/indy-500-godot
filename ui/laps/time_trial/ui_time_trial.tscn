@@ -132,7 +132,7 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="timer_await_lap" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 3.0
 
 [node name="timer_await_sector" type="Timer" parent="."]
 one_shot = true

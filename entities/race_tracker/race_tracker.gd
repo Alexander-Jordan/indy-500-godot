@@ -6,28 +6,24 @@ var checkpoint: Checkpoint = null:
 			checkpoint = c
 			return
 		
+		# just ignore when there's no current lap in progress
 		if checkpoint != null and laps.current == null:
 			return
 		
 		# no previous checkpoint is set
 		if checkpoint == null:
-			if c.order_id == 0: # only set it if it's the first
+			if c == c.checkpoints.get_next(checkpoint): # only if it's the next
 				checkpoint = c
-				laps.new_lap()
+				laps.new_lap(c.checkpoints)
 			return # otherwise, just ignore it
 		
-		# the new checkpoint is the next checkpoint in order
-		# OR the new checkpoint is the previous checkpoint in order
-		if c.order_id == checkpoint.order_id + 1 or c.order_id == checkpoint.order_id - 1:
+		if c == checkpoint.get_previous():
 			checkpoint = c
-			laps.current.sectors.new_sector(c)
 			return
-	
-		# not the next checkpoint by the normal order id, but by the secondary
-		# this means that a lap has been completed
-		if c.order_id_secondary == checkpoint.order_id + 1:
+		
+		if c == checkpoint.get_next():
+			laps.current.sectors.current.try_end_sector(checkpoint, c)
 			checkpoint = c
-			laps.end_lap()
 var laps: Laps = Laps.new():
 	set(l):
 		laps = l

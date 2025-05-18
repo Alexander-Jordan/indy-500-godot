@@ -63,17 +63,16 @@ func on_best_changed(best: Lap) -> void:
 	label_best_time.text = best._to_string()
 
 func on_lap_ended(_lap: Lap, number: int) -> void:
-	hboxcontainer_best.show()
-	hboxcontainer_optimal.show()
+	visibility_best_and_optimal(true)
 	
 	if number == laps.max_laps and timer_await_sector.timeout.is_connected(reset_sectors):
 		timer_await_sector.timeout.disconnect(reset_sectors)
 	timer_await_lap.start()
-	if timer_await_lap.timeout.is_connected(hide_best_and_optimal):
-		timer_await_lap.timeout.disconnect(hide_best_and_optimal)
+	if timer_await_lap.timeout.is_connected(visibility_best_and_optimal):
+		timer_await_lap.timeout.disconnect(visibility_best_and_optimal)
 
 func on_lap_started(_lap: Lap, _number: int) -> void:
-	timer_await_lap.timeout.connect(hide_best_and_optimal)
+	timer_await_lap.timeout.connect(visibility_best_and_optimal)
 
 func on_optimal_changed(optimal: Lap) -> void:
 	label_optimal_time.text = optimal._to_string()
@@ -83,17 +82,21 @@ func on_sector_ended(sector: Sector, number: int) -> void:
 		timer_await_sector.timeout.disconnect(reset_sectors)
 	
 	var panel_style_box: StyleBoxFlat
+	var optimal_sector: Sector = null
 	if number == 1:
 		panel_style_box = panelcontainer_sector_1.get_theme_stylebox('panel')
+		optimal_sector = laps.optimal.sectors.first if laps.optimal else null
 	if number == 2:
 		panel_style_box = panelcontainer_sector_2.get_theme_stylebox('panel')
+		optimal_sector = laps.optimal.sectors.second if laps.optimal else null
 	if number == 3:
 		panel_style_box = panelcontainer_sector_3.get_theme_stylebox('panel')
+		optimal_sector = laps.optimal.sectors.third if laps.optimal else null
 	
 	if panel_style_box != null:
-		if laps.optimal == null:
+		if optimal_sector == null:
 			panel_style_box.bg_color = color_sector_faster
-		elif sector.time < laps.optimal.sectors.all[number-1].time:
+		elif sector.time < optimal_sector.time:
 			panel_style_box.bg_color = color_sector_faster
 		else:
 			panel_style_box.bg_color = color_sector_slower
@@ -109,7 +112,7 @@ func on_sector_started(_sector: Sector, _number: int) -> void:
 
 func reset() -> void:
 	reset_sectors()
-	hide_best_and_optimal()
+	visibility_best_and_optimal()
 	label_time.text = '0:00.000'
 	label_best_time.text = '0:00.000'
 	label_optimal_time.text = '0:00.000'
@@ -120,6 +123,6 @@ func reset_sectors() -> void:
 		if panel_style_box:
 			panel_style_box.bg_color = color_sector_default
 
-func hide_best_and_optimal() -> void:
-	hboxcontainer_best.hide()
-	hboxcontainer_optimal.hide()
+func visibility_best_and_optimal(to: bool = false) -> void:
+	hboxcontainer_best.visible = to
+	hboxcontainer_optimal.visible = to

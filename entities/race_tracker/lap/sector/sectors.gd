@@ -1,55 +1,80 @@
 class_name Sectors extends Resource
 
-var all: Array[Sector] = []
 var current: Sector = null
+var first: Sector = null
+var second: Sector = null
+var third: Sector = null
 
-signal sector_ended(number: int)
-signal sector_started(number: int)
+signal sector_ended(sector: Sector)
+signal sector_started(sector: Sector)
 
-func _init() -> void:
-	new_sector()
+func _init(checkpoints: Checkpoints = null) -> void:
+	if checkpoints == null:
+		return
+	
+	first = Sector.new(checkpoints.first, checkpoints.second)
+	second = Sector.new(checkpoints.second, checkpoints.third)
+	third = Sector.new(checkpoints.third, checkpoints.first if checkpoints.loop else checkpoints.forth)
+	
+	first.finished.connect(on_sector_finish)
+	second.finished.connect(on_sector_finish)
+	third.finished.connect(on_sector_finish)
+	
+	start_sector(first)
 
 func _to_string() -> String:
 	var s: String = ''
-	for index in all.size():
-		if index > 0:
-			s += ', '
-		s += 'S%s: %s' % [index + 1, all[index]]
+	for sector in [first, second, third]:
+		match sector:
+			first:
+				s += 'S1: %s, ' % sector
+			second:
+				s += 'S2: %s, ' % sector
+			third:
+				s += 'S3: %s' % sector
 	return s
+
+func on_sector_finish(sector: Sector) -> void:
+	current = null
+	match sector:
+		first:
+			sector_ended.emit(sector)
+			start_sector(second)
+		second:
+			sector_ended.emit(sector)
+			start_sector(third)
+		third:
+			sector_ended.emit(sector)
 
 func get_duration() -> float:
 	var duration = 0.0
-	for sector in all:
+	for sector in [first, second, third]:
 		duration += sector.duration
 	return duration
 
-func new_sector(checkpoint: Checkpoint = null) -> void:
-	if current and checkpoint and current.end_checkpoint_order_id != checkpoint.order_id:
-		return
-	if current:
-		current.finished = true
-		sector_ended.emit(current, all.size())
-	var next: Sector = Sector.new()
-	next.time = current.time if current != null else 0.0
-	current = next
-	if checkpoint:
-		current.start_checkpoint_order_id = checkpoint.order_id
-	all.append(current)
-	sector_started.emit(current, all.size())
-
 func set_from_other(other: Sectors) -> void:
-	for index in other.all.size():
-		if all.size() <= index:
-			all.append(Sector.new().set_from_other(other.all[index]))
-		else:
-			all[index].set_from_other(other.all[index])
 	current = other.current
+	first = other.first
+	second = other.second
+	third = other.third
+
+func start_sector(sector: Sector) -> void:
+	match sector:
+		first:
+			sector.time = 0.0
+		second:
+			sector.time = first.time
+		third:
+			sector.time = second.time
+	current = sector
+	sector_started.emit(sector)
 
 func time_tick(delta: float) -> void:
 	if current:
 		current.time_tick(delta)
 
 func to_best_sectors(other: Sectors) -> Sectors:
-	for index in other.all.size():
-		self.all[index].to_best_sector(other.all[index])
+	self.first.to_best_sector(other.first)
+	self.second.to_best_sector(other.second)
+	self.third.to_best_sector(other.third)
 	return self
