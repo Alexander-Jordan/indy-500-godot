@@ -8,14 +8,18 @@ class_name UILaps extends VBoxContainer
 
 func _ready() -> void:
 	GM.race_settings.mode_changed.connect(sync_with_mode)
-	car.race_tracker.laps_changed.connect(set_laps)
+	GM.reset.connect(reset)
 	
-	set_laps(car.race_tracker.laps)
+	set_tracker(car.tracker)
 	sync_with_mode(GM.race_settings.mode)
 
-func set_laps(laps: Laps) -> void:
-	ui_race.laps = laps
-	ui_time_trial.laps = laps
+func reset() -> void:
+	ui_race.reset()
+	ui_time_trial.reset()
+
+func set_tracker(tracker: Tracker) -> void:
+	ui_race.tracker = tracker
+	ui_time_trial.tracker = tracker
 
 func sync_with_mode(mode: RaceSettings.Mode) -> void:
 	match mode:

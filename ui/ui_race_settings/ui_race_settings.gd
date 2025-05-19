@@ -10,6 +10,10 @@ var race_settings_previous: RaceSettings = RaceSettings.new()
 func _ready() -> void:
 	button_cancel.pressed.connect(cancel_settings)
 	button_confirm.pressed.connect(confirm_settings)
+	GM.state_changed.connect(func(state: GM.State):
+		if state == GM.State.FINISHED:
+			open_settings()
+	)
 	options_button_mode.item_selected.connect(func(index: int): GM.race_settings.mode = index)
 	spin_box_laps.value_changed.connect(func(value: float): GM.race_settings.laps = int(value))
 	

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cy6a3pnpjsddk" path="res://entities/car/car.gd" id="1_yotxw"]
 [ext_resource type="Texture2D" uid="uid://dyv5mbbaulhqp" path="res://entities/car/car_red.png" id="2_1ang0"]
-[ext_resource type="Script" uid="uid://bp5cmngsjbo3l" path="res://entities/race_tracker/race_tracker.gd" id="3_x0apo"]
+[ext_resource type="Script" uid="uid://bp5cmngsjbo3l" path="res://entities/tracker/tracker.gd" id="3_x0apo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qxogl"]
 size = Vector2(16, 14)
@@ -13,11 +13,11 @@ size = Vector2(16, 8)
 [node name="Car" type="CharacterBody2D"]
 script = ExtResource("1_yotxw")
 
-[node name="RaceTracker" type="Area2D" parent="."]
+[node name="Tracker" type="Area2D" parent="."]
 script = ExtResource("3_x0apo")
 metadata/_custom_type_script = "uid://bp5cmngsjbo3l"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceTracker"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracker"]
 position = Vector2(-8, 0)
 shape = SubResource("RectangleShape2D_qxogl")
 

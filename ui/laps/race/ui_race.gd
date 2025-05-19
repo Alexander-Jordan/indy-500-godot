@@ -1,7 +1,8 @@
 class_name UIRace extends PanelContainer
 
+@onready var hboxcontainer_position: HBoxContainer = $MarginContainer/VBoxContainer/hboxcontainer_position
 @onready var label_lap_number: Label = $MarginContainer/VBoxContainer/HBoxContainer2/label_lap_number
-@onready var label_position: Label = $MarginContainer/VBoxContainer/HBoxContainer/label_position
+@onready var label_position: Label = $MarginContainer/VBoxContainer/hboxcontainer_position/label_position
 
 var disabled: bool = false:
 	set(d):
@@ -9,26 +10,33 @@ var disabled: bool = false:
 			return
 		disabled = d
 		visible = !d
-var laps: Laps = null:
-	set(l):
-		if disabled or l == laps:
+var tracker: Tracker = null:
+	set(t):
+		if disabled or t == tracker:
 			return
-		if laps != null:
-			laps_signals_disconnect(laps)
-		laps = l
+		if tracker != null:
+			tracker_signals_disconnect(tracker)
+		tracker = t
 		reset()
-		if l != null:
-			laps_signals_connect(l)
+		if t != null:
+			tracker_signals_connect(t)
 
-func laps_signals_connect(new_laps: Laps) -> void:
-	new_laps.lap_started.connect(on_lap_started)
+func tracker_signals_connect(t: Tracker) -> void:
+	t.laps.lap_started.connect(on_lap_started)
+	t.finished.connect(on_finished)
 
-func laps_signals_disconnect(old_laps: Laps) -> void:
-	old_laps.lap_started.disconnect(on_lap_started)
+func tracker_signals_disconnect(t: Tracker) -> void:
+	t.laps.lap_started.disconnect(on_lap_started)
+	t.finished.disconnect(on_finished)
 
 func on_lap_started(_lap: Lap, number: int) -> void:
 	label_lap_number.text = str(number)
 
+func on_finished(place: int) -> void:
+	label_position.text = str(place)
+	hboxcontainer_position.show()
+
 func reset() -> void:
+	hboxcontainer_position.hide()
 	label_lap_number.text = '0'
 	label_position.text = '0'

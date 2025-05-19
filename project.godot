@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GM="*res://utilities/game_manager/game_manager.gd"
+SM="*res://utilities/session_manager/session_manager.gd"
 
 [display]
 

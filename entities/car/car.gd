@@ -11,12 +11,13 @@ class_name Car extends CharacterBody2D
 		if sprite_2d:
 			sprite_2d.texture = sprite
 
-@onready var race_tracker: RaceTracker = $RaceTracker
+@onready var tracker: Tracker = $Tracker
 @onready var spawn_position: Vector2 = position
 @onready var spawn_rotation: float = rotation
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
 var acceleration_input: float = 0.0
+var finished: bool = false
 var steering_input: float = 0.0
 
 func _physics_process(delta: float) -> void:
@@ -57,6 +58,7 @@ func _ready() -> void:
 				enable()
 	)
 	GM.reset.connect(reset)
+	tracker.finished.connect(func(_place: int): finished = true)
 
 func calculate_steering(delta: float) -> void:
 	# Find the wheel positions
@@ -92,7 +94,7 @@ func get_acceleration() -> Vector2:
 	return new_acceleration
 
 func get_acceleration_input() -> float:
-	return -Input.get_axis(player + '_up', player + '_down') if GM.state == GM.State.RACING else 0.0
+	return -Input.get_axis(player + '_up', player + '_down') if GM.state == GM.State.RACING and !finished else 0.0
 
 func get_drag_force() -> Vector2:
 	return velocity * velocity.length() * properties.drag
@@ -104,7 +106,7 @@ func get_steering() -> float:
 	return steering_input * deg_to_rad(properties.steering_angle_degrees_max)
 
 func get_steer_input() -> float:
-	return Input.get_axis(player + '_left', player + '_right') if GM.state == GM.State.RACING else 0.0
+	return Input.get_axis(player + '_left', player + '_right') if GM.state == GM.State.RACING and !finished else 0.0
 
 func get_traction() -> float:
 	var normalized_slip: float = (velocity.length() - properties.speed_min) / (properties.speed_max - properties.speed_min)
@@ -112,7 +114,8 @@ func get_traction() -> float:
 	return properties.traction_curve.sample(normalized_slip)
 
 func reset() -> void:
-	race_tracker.reset()
+	finished = false
+	tracker.reset()
 	velocity = Vector2.ZERO
 	properties.acceleration = Vector2.ZERO
 	position = spawn_position

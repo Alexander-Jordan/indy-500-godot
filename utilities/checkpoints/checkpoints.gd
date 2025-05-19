@@ -4,7 +4,6 @@ const CHECKPOINTS_AMOUNT = 4
 
 @export var loop: bool = true
 
-var all: Array[Checkpoint] = []
 var first: Checkpoint = null
 var second: Checkpoint = null
 var third: Checkpoint = null
@@ -38,17 +37,18 @@ func get_previous(from: Checkpoint) -> Checkpoint:
 			return null
 
 func set_checkpoints_from_children() -> void:
+	if loop and get_child_count() != CHECKPOINTS_AMOUNT - 1:
+		assert(false, 'Exactly %d Checkpoint nodes are required as children to a looped Checkpoints node.' % (CHECKPOINTS_AMOUNT - 1))
+		return
+	if !loop and get_child_count() != CHECKPOINTS_AMOUNT:
+		assert(false, 'Exactly %d Checkpoint nodes are required as children to a Checkpoints node.' % (CHECKPOINTS_AMOUNT))
+		return
+	
 	var children: Array[Node] = get_children()
 	for index in children.size():
 		var child: Node = children[index]
 		if child is not Checkpoint:
 			assert(false, 'Only Checkpoint nodes are allowed as children to Checkpoints node.')
-			return
-		if loop and index >= CHECKPOINTS_AMOUNT:
-			assert(false, 'Max %d Checkpoint nodes are allowed as children to a looped Checkpoints node.' % (CHECKPOINTS_AMOUNT - 1))
-			return
-		if !loop and index >= CHECKPOINTS_AMOUNT:
-			assert(false, 'Max %d Checkpoint nodes are allowed as children to a Checkpoints node.' % CHECKPOINTS_AMOUNT)
 			return
 		match index:
 			0:

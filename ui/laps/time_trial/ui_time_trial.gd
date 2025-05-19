@@ -25,39 +25,40 @@ var disabled: bool = false:
 			return
 		disabled = d
 		visible = !d
-var laps: Laps = null:
-	set(l):
-		if l == laps:
+var tracker: Tracker = null:
+	set(t):
+		if t == tracker:
 			return
-		if laps != null:
-			laps_signals_disconnect(laps)
-		laps = l
+		if tracker != null:
+			tracker_signals_disconnect(tracker)
+		tracker = t
 		reset()
-		if l != null:
-			laps_signals_connect(l)
+		if t != null:
+			tracker_signals_connect(t)
 
 func _process(_delta: float) -> void:
-	if disabled or laps == null or laps.current == null:
+	if disabled or tracker == null or tracker.laps == null or tracker.laps.current == null:
 		return
 	if timer_await_sector.time_left > 0:
 		return
-	label_time.text = laps.current._to_string()
+	label_time.text = tracker.laps.current._to_string()
 
-func laps_signals_connect(new_laps: Laps) -> void:
-	new_laps.best_changed.connect(on_best_changed)
-	new_laps.lap_ended.connect(on_lap_ended)
-	new_laps.lap_started.connect(on_lap_started)
-	new_laps.optimal_changed.connect(on_optimal_changed)
-	new_laps.sector_ended.connect(on_sector_ended)
-	new_laps.sector_started.connect(on_sector_started)
+func tracker_signals_connect(t: Tracker) -> void:
+	print(t)
+	t.laps.best_changed.connect(on_best_changed)
+	t.laps.lap_ended.connect(on_lap_ended)
+	t.laps.lap_started.connect(on_lap_started)
+	t.laps.optimal_changed.connect(on_optimal_changed)
+	t.laps.sector_ended.connect(on_sector_ended)
+	t.laps.sector_started.connect(on_sector_started)
 
-func laps_signals_disconnect(old_laps: Laps) -> void:
-	old_laps.best_changed.disconnect(on_best_changed)
-	old_laps.lap_ended.disconnect(on_lap_ended)
-	old_laps.lap_started.disconnect(on_lap_started)
-	old_laps.optimal_changed.disconnect(on_optimal_changed)
-	old_laps.sector_ended.disconnect(on_sector_ended)
-	old_laps.sector_started.disconnect(on_sector_started)
+func tracker_signals_disconnect(t: Tracker) -> void:
+	t.laps.best_changed.disconnect(on_best_changed)
+	t.laps.lap_ended.disconnect(on_lap_ended)
+	t.laps.lap_started.disconnect(on_lap_started)
+	t.laps.optimal_changed.disconnect(on_optimal_changed)
+	t.laps.sector_ended.disconnect(on_sector_ended)
+	t.laps.sector_started.disconnect(on_sector_started)
 
 func on_best_changed(best: Lap) -> void:
 	label_best_time.text = best._to_string()
@@ -65,7 +66,7 @@ func on_best_changed(best: Lap) -> void:
 func on_lap_ended(_lap: Lap, number: int) -> void:
 	visibility_best_and_optimal(true)
 	
-	if number == laps.max_laps and timer_await_sector.timeout.is_connected(reset_sectors):
+	if number == tracker.laps.max_laps and timer_await_sector.timeout.is_connected(reset_sectors):
 		timer_await_sector.timeout.disconnect(reset_sectors)
 	timer_await_lap.start()
 	if timer_await_lap.timeout.is_connected(visibility_best_and_optimal):
@@ -85,13 +86,13 @@ func on_sector_ended(sector: Sector, number: int) -> void:
 	var optimal_sector: Sector = null
 	if number == 1:
 		panel_style_box = panelcontainer_sector_1.get_theme_stylebox('panel')
-		optimal_sector = laps.optimal.sectors.first if laps.optimal else null
+		optimal_sector = tracker.laps.optimal.sectors.first if tracker.laps.optimal else null
 	if number == 2:
 		panel_style_box = panelcontainer_sector_2.get_theme_stylebox('panel')
-		optimal_sector = laps.optimal.sectors.second if laps.optimal else null
+		optimal_sector = tracker.laps.optimal.sectors.second if tracker.laps.optimal else null
 	if number == 3:
 		panel_style_box = panelcontainer_sector_3.get_theme_stylebox('panel')
-		optimal_sector = laps.optimal.sectors.third if laps.optimal else null
+		optimal_sector = tracker.laps.optimal.sectors.third if tracker.laps.optimal else null
 	
 	if panel_style_box != null:
 		if optimal_sector == null:

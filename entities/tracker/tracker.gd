@@ -1,4 +1,4 @@
-class_name RaceTracker extends Area2D
+class_name Tracker extends Area2D
 
 var checkpoint: Checkpoint = null:
 	set(c):
@@ -29,6 +29,7 @@ var laps: Laps = Laps.new():
 		laps = l
 		laps_changed.emit(l)
 
+signal finished(place: int)
 signal laps_changed(laps: Laps)
 
 func _process(delta: float) -> void:
@@ -41,8 +42,13 @@ func _ready() -> void:
 			checkpoint = area
 	)
 	GM.race_settings.laps_changed.connect(func(number_of_laps: int): laps.max_laps = number_of_laps)
+	laps.finished.connect(on_laps_finished)
+
+func on_laps_finished(_laps: Laps) -> void:
+	var place: int = SM.add_finished(self)
+	finished.emit(place)
 
 func reset() -> void:
-	laps = Laps.new()
+	laps.reset()
 	laps.max_laps = GM.race_settings.laps
 	checkpoint = null

@@ -5,12 +5,19 @@ var best: Lap = null
 var current: Lap = null
 var max_laps: int = 0
 var optimal: Lap = null
+var progress: float = 0.0:
+	set(p):
+		if p < 0 or p == progress:
+			return
+		progress = p
+		progress_changed.emit(p)
 
 signal best_changed(best: Lap)
 signal finished(laps: Laps)
 signal lap_ended(lap: Lap, number: int)
 signal lap_started(lap: Lap, number: int)
 signal optimal_changed(optimal: Lap)
+signal progress_changed(progress: float)
 signal sector_ended(sector: Sector, number: int)
 signal sector_started(sector: Sector, number: int)
 
@@ -22,17 +29,17 @@ func _to_string() -> String:
 		s += 'Best: %s\n' % best
 	if optimal:
 		s += 'Optimal: %s\n' % optimal
-	return s
+	return s if s != '' else 'No laps set.'
 
 func lap_signals_connect(l: Lap) -> void:
 	l.finished.connect(on_lap_finished)
 	l.sector_ended.connect(on_sector_ended)
 	l.sector_started.connect(on_sector_started)
 
-func lap_signals_disconnect(old_lap: Lap) -> void:
-	old_lap.finished.disconnect(on_lap_finished)
-	old_lap.sector_ended.disconnect(on_sector_ended)
-	old_lap.sector_started.disconnect(on_sector_started)
+func lap_signals_disconnect(l: Lap) -> void:
+	l.finished.disconnect(on_lap_finished)
+	l.sector_ended.disconnect(on_sector_ended)
+	l.sector_started.disconnect(on_sector_started)
 
 func new_lap(checkpoints: Checkpoints) -> void:
 	current = Lap.new(checkpoints)
@@ -42,6 +49,7 @@ func new_lap(checkpoints: Checkpoints) -> void:
 
 func on_lap_finished() -> void:
 	lap_ended.emit(current, all.size())
+	progress += 0.33
 	update_best()
 	update_optimal()
 	lap_signals_disconnect(current)
@@ -53,6 +61,7 @@ func on_lap_finished() -> void:
 
 func on_sector_ended(sector: Sector, number: int) -> void:
 	sector_ended.emit(sector, number)
+	progress += 0.33
 
 func on_sector_started(sector: Sector, number: int) -> void:
 	sector_started.emit(sector, number)

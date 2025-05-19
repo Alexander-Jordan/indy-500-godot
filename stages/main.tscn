@@ -67,33 +67,33 @@ player = "p2"
 properties = ExtResource("2_43f5m")
 sprite = ExtResource("4_fejr8")
 
-[node name="checkpoints" type="Node2D" parent="."]
+[node name="Checkpoints" type="Node2D" parent="."]
 script = ExtResource("5_xbtqd")
 metadata/_custom_type_script = "uid://lj2f1x02srbw"
 
-[node name="Checkpoint" type="Area2D" parent="checkpoints"]
+[node name="Checkpoint" type="Area2D" parent="Checkpoints"]
 position = Vector2(256, 0)
 script = ExtResource("6_5sjox")
 metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint"]
 position = Vector2(0, 100)
 shape = SubResource("SegmentShape2D_5sjox")
 
-[node name="Checkpoint2" type="Area2D" parent="checkpoints"]
+[node name="Checkpoint2" type="Area2D" parent="Checkpoints"]
 position = Vector2(512, 512)
 script = ExtResource("6_5sjox")
 metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint2"]
 shape = SubResource("SegmentShape2D_byaf2")
 
-[node name="Checkpoint3" type="Area2D" parent="checkpoints"]
+[node name="Checkpoint3" type="Area2D" parent="Checkpoints"]
 position = Vector2(0, 512)
 script = ExtResource("6_5sjox")
 metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="checkpoints/Checkpoint3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint3"]
 shape = SubResource("SegmentShape2D_xbtqd")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
