@@ -1,0 +1,138 @@
+[gd_scene load_steps=6 format=3 uid="uid://bd0y5dvodqn2e"]
+
+[ext_resource type="Theme" uid="uid://cfpqv3k0la1oe" path="res://base_theme.tres" id="1_lvk6g"]
+[ext_resource type="Script" uid="uid://dja77sui7370y" path="res://ui/laps/time_trial/ui_time_trial.gd" id="2_ceytw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ceytw"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bsym"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3vbl"]
+bg_color = Color(0, 0, 0, 0)
+
+[node name="UITimeTrial" type="PanelContainer"]
+custom_minimum_size = Vector2(128, 0)
+offset_right = 128.0
+offset_bottom = 67.0
+theme = ExtResource("1_lvk6g")
+script = ExtResource("2_ceytw")
+color_sector_best = Color(1, 0, 1, 1)
+color_sector_default = Color(0, 0, 0, 0)
+color_sector_faster = Color(0, 1, 0, 1)
+color_sector_slower = Color(1, 1, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="hboxcontainer_sectors" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="panelcontainer_sector1" type="PanelContainer" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ceytw")
+
+[node name="label_sector1" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector1"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "S1"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="panelcontainer_sector2" type="PanelContainer" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_1bsym")
+
+[node name="label_sector2" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "S2"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="panelcontainer_sector3" type="PanelContainer" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_k3vbl")
+
+[node name="label_sector3" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "S3"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="label_time" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 16
+text = "0:00.000"
+vertical_alignment = 1
+uppercase = true
+
+[node name="hboxcontainer_best" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_best"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 8
+text = "BEST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="label_best_time" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_best"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 8
+text = "0:00.000"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="hboxcontainer_optimal" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_optimal"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 8
+text = "OPTIMAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="label_optimal_time" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_optimal"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 8
+text = "0:00.000"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="timer_await_lap" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="timer_await_sector" type="Timer" parent="."]
+one_shot = true

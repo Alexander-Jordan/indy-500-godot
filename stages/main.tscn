@@ -1,7 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=16 format=3 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
+[ext_resource type="Texture2D" uid="uid://dyv5mbbaulhqp" path="res://entities/car/car_red.png" id="3_0oqm6"]
+[ext_resource type="Texture2D" uid="uid://x8u2oh50r6uw" path="res://entities/car/car_blue.png" id="4_fejr8"]
+[ext_resource type="Script" uid="uid://lj2f1x02srbw" path="res://utilities/checkpoints/checkpoints.gd" id="5_xbtqd"]
+[ext_resource type="Script" uid="uid://c0m5wq5p2kki7" path="res://utilities/checkpoints/checkpoint.gd" id="6_5sjox"]
+[ext_resource type="PackedScene" uid="uid://certwioknxlwh" path="res://ui/ui_race_settings/ui_race_settings.tscn" id="6_byaf2"]
+[ext_resource type="PackedScene" uid="uid://c5g83xfmsr2l5" path="res://ui/laps/ui_laps.tscn" id="7_byaf2"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
@@ -13,6 +19,16 @@ normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0oqm6"]
 normal = Vector2(-1, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_5sjox"]
+a = Vector2(0, -100)
+b = Vector2(0, 100)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_byaf2"]
+b = Vector2(-192, -192)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_xbtqd"]
+b = Vector2(192, -192)
 
 [node name="Main" type="Node2D"]
 
@@ -41,5 +57,70 @@ position = Vector2(512, 0)
 shape = SubResource("WorldBoundaryShape2D_0oqm6")
 
 [node name="Car" parent="." instance=ExtResource("1_72s8x")]
-position = Vector2(256, 128)
+position = Vector2(250, 102)
 properties = ExtResource("2_43f5m")
+sprite = ExtResource("3_0oqm6")
+
+[node name="Car2" parent="." instance=ExtResource("1_72s8x")]
+position = Vector2(250, 128)
+player = "p2"
+properties = ExtResource("2_43f5m")
+sprite = ExtResource("4_fejr8")
+
+[node name="Checkpoints" type="Node2D" parent="."]
+script = ExtResource("5_xbtqd")
+metadata/_custom_type_script = "uid://lj2f1x02srbw"
+
+[node name="Checkpoint" type="Area2D" parent="Checkpoints"]
+position = Vector2(256, 0)
+script = ExtResource("6_5sjox")
+metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint"]
+position = Vector2(0, 100)
+shape = SubResource("SegmentShape2D_5sjox")
+
+[node name="Checkpoint2" type="Area2D" parent="Checkpoints"]
+position = Vector2(512, 512)
+script = ExtResource("6_5sjox")
+metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint2"]
+shape = SubResource("SegmentShape2D_byaf2")
+
+[node name="Checkpoint3" type="Area2D" parent="Checkpoints"]
+position = Vector2(0, 512)
+script = ExtResource("6_5sjox")
+metadata/_custom_type_script = "uid://c0m5wq5p2kki7"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint3"]
+shape = SubResource("SegmentShape2D_xbtqd")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="UILaps" parent="CanvasLayer/MarginContainer" node_paths=PackedStringArray("car") instance=ExtResource("7_byaf2")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+car = NodePath("../../../Car")
+
+[node name="UILaps2" parent="CanvasLayer/MarginContainer" node_paths=PackedStringArray("car") instance=ExtResource("7_byaf2")]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+car = NodePath("../../../Car2")
+disable_time_trial = true
+
+[node name="UIRaceSettings" parent="CanvasLayer/MarginContainer" instance=ExtResource("6_byaf2")]
+layout_mode = 2

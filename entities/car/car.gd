@@ -1,12 +1,30 @@
+@tool
 class_name Car extends CharacterBody2D
 
 @export_enum('p1', 'p2') var player: String = 'p1'
 @export var properties: CarProperties
+@export var sprite: CompressedTexture2D:
+	set(s):
+		if s == sprite:
+			return
+		sprite = s
+		if sprite_2d:
+			sprite_2d.texture = sprite
+
+@onready var tracker: Tracker = $Tracker
+@onready var spawn_position: Vector2 = position
+@onready var spawn_rotation: float = rotation
+@onready var sprite_2d: Sprite2D = $Sprite2D
 
 var acceleration_input: float = 0.0
+var finished: bool = false
 var steering_input: float = 0.0
 
 func _physics_process(delta: float) -> void:
+	# Don't run any code from this function in the editor
+	if Engine.is_editor_hint():
+		return
+	
 	properties.acceleration = get_acceleration()
 	properties.steering = get_steering()
 	calculate_steering(delta)
@@ -18,8 +36,29 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _process(_delta: float) -> void:
+	# Don't run any code from this function in the editor
+	if Engine.is_editor_hint():
+		return
+	
 	acceleration_input = get_acceleration_input()
 	steering_input = get_steer_input()
+
+func _ready() -> void:
+	# Don't run any code from this function in the editor
+	if Engine.is_editor_hint():
+		return
+	
+	sprite_2d.texture = sprite
+	
+	GM.players_changed.connect(func(players: int):
+		if player == 'p2':
+			if players == 1:
+				disable()
+			else:
+				enable()
+	)
+	GM.reset.connect(reset)
+	tracker.finished.connect(func(_place: int): finished = true)
 
 func calculate_steering(delta: float) -> void:
 	# Find the wheel positions
@@ -41,13 +80,21 @@ func calculate_steering(delta: float) -> void:
 	# Set the rotation to the new direction
 	rotation = new_heading.angle()
 
+func disable() -> void:
+	hide()
+	process_mode = Node.PROCESS_MODE_DISABLED
+
+func enable() -> void:
+	show()
+	process_mode = Node.PROCESS_MODE_INHERIT
+
 func get_acceleration() -> Vector2:
 	var new_acceleration: Vector2 = transform.x * (properties.engine_power * acceleration_input)
 	new_acceleration -= get_drag_force() + get_friction_force()
 	return new_acceleration
 
 func get_acceleration_input() -> float:
-	return -Input.get_axis(player + '_up', player + '_down')
+	return -Input.get_axis(player + '_up', player + '_down') if GM.state == GM.State.RACING and !finished else 0.0
 
 func get_drag_force() -> Vector2:
 	return velocity * velocity.length() * properties.drag
@@ -59,9 +106,17 @@ func get_steering() -> float:
 	return steering_input * deg_to_rad(properties.steering_angle_degrees_max)
 
 func get_steer_input() -> float:
-	return Input.get_axis(player + '_left', player + '_right')
+	return Input.get_axis(player + '_left', player + '_right') if GM.state == GM.State.RACING and !finished else 0.0
 
 func get_traction() -> float:
 	var normalized_slip: float = (velocity.length() - properties.speed_min) / (properties.speed_max - properties.speed_min)
 	normalized_slip = clampf(normalized_slip, 0.0, 1.0)
 	return properties.traction_curve.sample(normalized_slip)
+
+func reset() -> void:
+	finished = false
+	tracker.reset()
+	velocity = Vector2.ZERO
+	properties.acceleration = Vector2.ZERO
+	position = spawn_position
+	rotation = spawn_rotation

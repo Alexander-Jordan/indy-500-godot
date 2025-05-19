@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://c5g83xfmsr2l5"]
+
+[ext_resource type="Theme" uid="uid://cfpqv3k0la1oe" path="res://base_theme.tres" id="1_irdm7"]
+[ext_resource type="PackedScene" uid="uid://y7lmrlgsrfle" path="res://ui/laps/race/ui_race.tscn" id="2_5jd1g"]
+[ext_resource type="PackedScene" uid="uid://bd0y5dvodqn2e" path="res://ui/laps/time_trial/ui_time_trial.tscn" id="2_dkcim"]
+[ext_resource type="Script" uid="uid://dis86arvb0b8s" path="res://ui/laps/ui_laps.gd" id="2_lnacl"]
+
+[node name="UILaps" type="VBoxContainer"]
+offset_right = 128.0
+offset_bottom = 151.0
+theme = ExtResource("1_irdm7")
+script = ExtResource("2_lnacl")
+
+[node name="UIRace" parent="." instance=ExtResource("2_5jd1g")]
+layout_mode = 2
+
+[node name="UITimeTrial" parent="." instance=ExtResource("2_dkcim")]
+layout_mode = 2
