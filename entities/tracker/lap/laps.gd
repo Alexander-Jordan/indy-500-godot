@@ -68,7 +68,9 @@ func on_sector_started(sector: Sector, number: int) -> void:
 
 func reset() -> void:
 	all = []
+	best = null
 	current = null
+	optimal = null
 
 func update_best() -> void:
 	if best == null or current.time < best.time:
@@ -78,8 +80,7 @@ func update_best() -> void:
 func update_optimal() -> void:
 	if optimal == null:
 		optimal = Lap.new().set_from_other(current)
-		optimal_changed.emit(optimal)
-		return
+	else:
+		optimal.to_optimal_lap(current)
 	
-	optimal.to_optimal_lap(current)
 	optimal_changed.emit(optimal)
