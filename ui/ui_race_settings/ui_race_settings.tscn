@@ -94,11 +94,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 
-[node name="button_cancel" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "CANCEL"
-
 [node name="button_confirm" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4

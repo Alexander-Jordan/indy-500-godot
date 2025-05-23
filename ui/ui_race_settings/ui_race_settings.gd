@@ -1,6 +1,5 @@
 class_name UIRaceSettings extends Control
 
-@onready var button_cancel: Button = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/button_cancel
 @onready var button_confirm: Button = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/button_confirm
 @onready var options_button_mode: OptionButton = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/options_button_mode
 @onready var spin_box_laps: SpinBox = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/spin_box_laps
@@ -8,7 +7,6 @@ class_name UIRaceSettings extends Control
 var race_settings_previous: RaceSettings = RaceSettings.new()
 
 func _ready() -> void:
-	button_cancel.pressed.connect(cancel_settings)
 	button_confirm.pressed.connect(confirm_settings)
 	GM.state_changed.connect(func(state: GM.State):
 		if state == GM.State.FINISHED:
