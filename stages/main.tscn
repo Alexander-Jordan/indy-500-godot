@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=19 format=4 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://certwioknxlwh" path="res://ui/ui_race_settings/ui_race_settings.tscn" id="6_byaf2"]
 [ext_resource type="Script" uid="uid://0qnkrmw8iuqh" path="res://entities/areas/slower_area.gd" id="6_lnxn1"]
 [ext_resource type="PackedScene" uid="uid://c5g83xfmsr2l5" path="res://ui/laps/ui_laps.tscn" id="7_byaf2"]
+[ext_resource type="PackedScene" uid="uid://d3ruiod47r6xq" path="res://ui/count_down/count_down.tscn" id="10_06h8b"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
@@ -146,6 +147,10 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 car = NodePath("../../../Car2")
 disable_time_trial = true
+
+[node name="CountDown" parent="CanvasLayer/MarginContainer" instance=ExtResource("10_06h8b")]
+visible = false
+layout_mode = 2
 
 [node name="UIRaceSettings" parent="CanvasLayer/MarginContainer" instance=ExtResource("6_byaf2")]
 layout_mode = 2

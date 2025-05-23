@@ -33,7 +33,7 @@ func confirm_settings() -> void:
 	race_settings_previous.set_variables_from_other(GM.race_settings)
 	GM.reset.emit()
 	hide()
-	GM.state = GM.State.RACING
+	GM.count_down.emit()
 
 func open_settings() -> void:
 	GM.state = GM.State.NONE
