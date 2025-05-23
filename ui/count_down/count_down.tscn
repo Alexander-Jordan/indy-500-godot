@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3ruiod47r6xq"]
+[gd_scene load_steps=5 format=3 uid="uid://d3ruiod47r6xq"]
 
 [ext_resource type="Script" uid="uid://bgh6yhef1pbdl" path="res://ui/count_down/ui_count_down.gd" id="1_dnx51"]
 [ext_resource type="Theme" uid="uid://cfpqv3k0la1oe" path="res://base_theme.tres" id="1_tqexn"]
+[ext_resource type="AudioStream" uid="uid://dp2nf0m7qlymf" path="res://ui/count_down/count_down.wav" id="3_ukiam"]
+[ext_resource type="AudioStream" uid="uid://n7ox3cxcgbey" path="res://ui/count_down/go.wav" id="4_ip5qx"]
 
 [node name="CountDown" type="Control"]
 layout_mode = 3
@@ -34,3 +36,11 @@ vertical_alignment = 1
 uppercase = true
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="audio_stream_player_count_down" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ukiam")
+bus = &"sfx"
+
+[node name="audio_stream_player_go" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ip5qx")
+bus = &"sfx"

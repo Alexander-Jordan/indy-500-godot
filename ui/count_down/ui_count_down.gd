@@ -3,6 +3,8 @@ class_name CountDown extends Control
 @export var count_from: int = 3
 @export var count_to: int = 0
 
+@onready var audio_stream_player_count_down: AudioStreamPlayer = $audio_stream_player_count_down
+@onready var audio_stream_player_go: AudioStreamPlayer = $audio_stream_player_go
 @onready var label: Label = $Label
 @onready var timer: Timer = $Timer
 
@@ -17,9 +19,11 @@ func on_timeout() -> void:
 	count -= 1
 	if count > count_to:
 		label.text = str(count)
+		audio_stream_player_count_down.play()
 		timer.start()
 	elif count == count_to:
 		label.text = 'GO!'
+		audio_stream_player_go.play()
 		timer.start()
 	else:
 		reset()
@@ -33,4 +37,5 @@ func reset() -> void:
 
 func start() -> void:
 	show()
+	audio_stream_player_count_down.play()
 	timer.start()
