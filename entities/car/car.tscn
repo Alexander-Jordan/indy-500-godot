@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bt4bmd1nfsw8w"]
+[gd_scene load_steps=11 format=3 uid="uid://bt4bmd1nfsw8w"]
 
 [ext_resource type="Script" uid="uid://cy6a3pnpjsddk" path="res://entities/car/car.gd" id="1_yotxw"]
 [ext_resource type="Texture2D" uid="uid://dyv5mbbaulhqp" path="res://entities/car/car_red.png" id="2_1ang0"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bp5cmngsjbo3l" path="res://entities/tracker/tracker.gd" id="3_x0apo"]
 [ext_resource type="AudioStream" uid="uid://d3sa2oak6q8hn" path="res://entities/tracker/lap_finished.wav" id="4_r1wmw"]
 [ext_resource type="AudioStream" uid="uid://bvscixwqvki2j" path="res://entities/tracker/session_finished.wav" id="6_r1wmw"]
+[ext_resource type="AudioStream" uid="uid://fg7pj4vh2h5g" path="res://entities/car/engine.wav" id="8_gsrsl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qxogl"]
 size = Vector2(16, 14)
@@ -41,3 +42,9 @@ shape = SubResource("RectangleShape2D_x0apo")
 z_index = 1
 position = Vector2(-8, 0)
 texture = ExtResource("2_1ang0")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_gsrsl")
+pitch_scale = 0.01
+autoplay = true
+bus = &"sfx"
