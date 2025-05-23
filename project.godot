@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GM="*res://utilities/game_manager/game_manager.gd"
 SM="*res://utilities/session_manager/session_manager.gd"
+SS="*res://utilities/save_system/save_system.gd"
 
 [display]
 
