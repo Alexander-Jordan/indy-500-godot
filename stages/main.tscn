@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=23 format=4 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://0qnkrmw8iuqh" path="res://entities/areas/slower_area.gd" id="6_lnxn1"]
 [ext_resource type="PackedScene" uid="uid://c5g83xfmsr2l5" path="res://ui/laps/ui_laps.tscn" id="7_byaf2"]
 [ext_resource type="PackedScene" uid="uid://d3ruiod47r6xq" path="res://ui/count_down/count_down.tscn" id="10_06h8b"]
+[ext_resource type="AudioStream" uid="uid://buidtqcplq6aj" path="res://assets/music/gaming-music-8-bit-console-play-background-intro-theme-278382.mp3" id="13_1k4el"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
@@ -173,3 +174,9 @@ layout_mode = 2
 
 [node name="UISessionSettings" parent="CanvasLayer/MarginContainer" instance=ExtResource("6_byaf2")]
 layout_mode = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_1k4el")
+volume_db = -12.0
+autoplay = true
+bus = &"music"
