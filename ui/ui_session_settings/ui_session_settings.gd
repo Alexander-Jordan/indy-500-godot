@@ -1,4 +1,4 @@
-class_name UIRaceSettings extends Control
+class_name UISessionSettings extends Control
 
 @onready var button_confirm: Button = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/button_confirm
 @onready var options_button_mode: OptionButton = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/options_button_mode

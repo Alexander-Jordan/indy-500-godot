@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://certwioknxlwh"]
 
 [ext_resource type="Theme" uid="uid://cfpqv3k0la1oe" path="res://base_theme.tres" id="1_wbsap"]
-[ext_resource type="Script" uid="uid://cpgqyj206fjrh" path="res://ui/ui_race_settings/ui_race_settings.gd" id="2_hi7hy"]
+[ext_resource type="Script" uid="uid://cpgqyj206fjrh" path="res://ui/ui_session_settings/ui_session_settings.gd" id="2_hi7hy"]
 
-[node name="UIRaceSettings" type="Control"]
+[node name="UISessionSettings" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,7 +41,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 2
-text = "RACE SETTINGS"
+text = "NEXT SESSION"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
