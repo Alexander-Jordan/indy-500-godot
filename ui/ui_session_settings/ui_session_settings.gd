@@ -1,14 +1,12 @@
-class_name UIRaceSettings extends Control
+class_name UISessionSettings extends Control
 
-@onready var button_cancel: Button = $MarginContainer/VBoxContainer/HBoxContainer/button_cancel
-@onready var button_confirm: Button = $MarginContainer/VBoxContainer/HBoxContainer/button_confirm
-@onready var options_button_mode: OptionButton = $MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/options_button_mode
-@onready var spin_box_laps: SpinBox = $MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/spin_box_laps
+@onready var button_confirm: Button = $PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/button_confirm
+@onready var options_button_mode: OptionButton = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer/options_button_mode
+@onready var spin_box_laps: SpinBox = $PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2/spin_box_laps
 
 var race_settings_previous: RaceSettings = RaceSettings.new()
 
 func _ready() -> void:
-	button_cancel.pressed.connect(cancel_settings)
 	button_confirm.pressed.connect(confirm_settings)
 	GM.state_changed.connect(func(state: GM.State):
 		if state == GM.State.FINISHED:
@@ -35,7 +33,7 @@ func confirm_settings() -> void:
 	race_settings_previous.set_variables_from_other(GM.race_settings)
 	GM.reset.emit()
 	hide()
-	GM.state = GM.State.RACING
+	GM.count_down.emit()
 
 func open_settings() -> void:
 	GM.state = GM.State.NONE

@@ -20,6 +20,7 @@ var players: int = 2:
 		players = p
 		players_changed.emit(p)
 
+signal count_down
 signal reset
 signal state_changed(state: State)
 signal players_changed(players: int)
