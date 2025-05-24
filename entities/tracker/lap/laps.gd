@@ -20,6 +20,7 @@ signal optimal_changed(optimal: Lap)
 signal progress_changed(progress: float)
 signal sector_ended(sector: Sector, number: int)
 signal sector_started(sector: Sector, number: int)
+signal track_best_changed(track_best: Lap)
 
 func _to_string() -> String:
 	var s: String = ''
@@ -52,6 +53,7 @@ func on_lap_finished() -> void:
 	progress += 0.33
 	update_best()
 	update_optimal()
+	update_track_best()
 	lap_signals_disconnect(current)
 	if max_laps == 0 or all.size() < max_laps:
 		new_lap(current.checkpoints)
@@ -84,3 +86,9 @@ func update_optimal() -> void:
 		optimal.to_optimal_lap(current)
 	
 	optimal_changed.emit(optimal)
+
+func update_track_best() -> void:
+	if SS.stats.best_lap == null or current.time < SS.stats.best_lap.time:
+		SS.stats.best_lap = current
+		SS.save_stats()
+		track_best_changed.emit(SS.stats.best_lap)

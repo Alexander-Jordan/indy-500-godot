@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=4 uid="uid://d05ej4e43kq5x"]
+[gd_scene load_steps=24 format=4 uid="uid://d05ej4e43kq5x"]
 
 [ext_resource type="PackedScene" uid="uid://bt4bmd1nfsw8w" path="res://entities/car/car.tscn" id="1_72s8x"]
 [ext_resource type="Resource" uid="uid://cmqlwg7dgno5h" path="res://entities/car/properties/properties_default.tres" id="2_43f5m"]
 [ext_resource type="Texture2D" uid="uid://dyv5mbbaulhqp" path="res://entities/car/car_red.png" id="3_0oqm6"]
+[ext_resource type="Script" uid="uid://bwkpe4y0j72l7" path="res://entities/car/properties/car_properties.gd" id="4_cu7i0"]
 [ext_resource type="Texture2D" uid="uid://x8u2oh50r6uw" path="res://entities/car/car_blue.png" id="4_fejr8"]
 [ext_resource type="TileSet" uid="uid://dwtd4v4c6yrou" path="res://stages/track/asphalt_tileset.tres" id="5_85ei1"]
 [ext_resource type="Script" uid="uid://lj2f1x02srbw" path="res://utilities/checkpoints/checkpoints.gd" id="5_xbtqd"]
@@ -11,6 +12,8 @@
 [ext_resource type="Script" uid="uid://0qnkrmw8iuqh" path="res://entities/areas/slower_area.gd" id="6_lnxn1"]
 [ext_resource type="PackedScene" uid="uid://c5g83xfmsr2l5" path="res://ui/laps/ui_laps.tscn" id="7_byaf2"]
 [ext_resource type="PackedScene" uid="uid://d3ruiod47r6xq" path="res://ui/count_down/count_down.tscn" id="10_06h8b"]
+[ext_resource type="AudioStream" uid="uid://buidtqcplq6aj" path="res://assets/music/gaming-music-8-bit-console-play-background-intro-theme-278382.mp3" id="13_1k4el"]
+[ext_resource type="PackedScene" uid="uid://b8ej8p02ra7an" path="res://ui/config/ui_config.tscn" id="13_v8qa1"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_72s8x"]
 normal = Vector2(0, 1)
@@ -22,6 +25,24 @@ normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0oqm6"]
 normal = Vector2(-1, 0)
+
+[sub_resource type="Curve" id="Curve_1k4el"]
+_limits = [1.0, 10.0, 0.0, 1.0]
+_data = [Vector2(0, 10), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_v8qa1"]
+script = ExtResource("4_cu7i0")
+drag = 0.002
+engine_power = 500.0
+friction = 0.9
+speed_min = 20.0
+speed_max = 323.293
+speed_reverse_max = 250.0
+steering_angle_degrees_max = 15.0
+traction_curve = SubResource("Curve_1k4el")
+wheel_base = 10.0
+metadata/_custom_type_script = "uid://bwkpe4y0j72l7"
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_5sjox"]
 b = Vector2(0, 185)
@@ -66,7 +87,7 @@ sprite = ExtResource("3_0oqm6")
 [node name="Car2" parent="." instance=ExtResource("1_72s8x")]
 position = Vector2(202, 144)
 player = "p2"
-properties = ExtResource("2_43f5m")
+properties = SubResource("Resource_v8qa1")
 sprite = ExtResource("4_fejr8")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="."]
@@ -154,3 +175,14 @@ layout_mode = 2
 
 [node name="UISessionSettings" parent="CanvasLayer/MarginContainer" instance=ExtResource("6_byaf2")]
 layout_mode = 2
+
+[node name="UIConfig" parent="CanvasLayer/MarginContainer" instance=ExtResource("13_v8qa1")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_1k4el")
+volume_db = -12.0
+autoplay = true
+bus = &"music"

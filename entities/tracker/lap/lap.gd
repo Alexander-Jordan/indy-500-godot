@@ -1,9 +1,10 @@
 class_name Lap extends Resource
 
+@export var has_finished: bool = false
+@export var sectors: Sectors = null
+@export var time: float = 0.0
+
 var checkpoints: Checkpoints = null
-var has_finished: bool = false
-var sectors: Sectors = null
-var time: float = 0.0
 
 signal finished
 signal sector_ended(sector: Sector, number: int)

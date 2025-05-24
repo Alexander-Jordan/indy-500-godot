@@ -11,6 +11,7 @@ class_name Car extends CharacterBody2D
 		if sprite_2d:
 			sprite_2d.texture = sprite
 
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var tracker: Tracker = $Tracker
 @onready var spawn_position: Vector2 = position
 @onready var spawn_rotation: float = rotation
@@ -40,6 +41,7 @@ func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	
+	audio_stream_player_2d.pitch_scale = clamp(velocity.length() / (properties.speed_max / 10.0), 0.01, 10.0)
 	acceleration_input = get_acceleration_input()
 	steering_input = get_steer_input()
 
