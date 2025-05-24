@@ -1,9 +1,9 @@
 class_name Sectors extends Resource
 
-var current: Sector = null
-var first: Sector = null
-var second: Sector = null
-var third: Sector = null
+@export var current: Sector = null
+@export var first: Sector = null
+@export var second: Sector = null
+@export var third: Sector = null
 
 signal sector_ended(sector: Sector)
 signal sector_started(sector: Sector)

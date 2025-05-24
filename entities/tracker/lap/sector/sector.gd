@@ -1,10 +1,11 @@
 class_name Sector extends Resource
 
+@export var duration: float = 0.0
+@export var has_finished: bool = false
+@export var time: float = 0.0
+
 var checkpoint_end: Checkpoint
 var checkpoint_start: Checkpoint
-var duration: float = 0.0
-var has_finished: bool = false
-var time: float = 0.0
 
 signal finished(sector: Sector)
 

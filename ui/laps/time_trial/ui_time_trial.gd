@@ -7,12 +7,14 @@ class_name UITimeTrial extends PanelContainer
 
 @onready var hboxcontainer_best: HBoxContainer = $MarginContainer/VBoxContainer/hboxcontainer_best
 @onready var hboxcontainer_optimal: HBoxContainer = $MarginContainer/VBoxContainer/hboxcontainer_optimal
+@onready var hboxcontainer_track_best: HBoxContainer = $MarginContainer/VBoxContainer/hboxcontainer_track_best
 @onready var label_best_time: Label = $MarginContainer/VBoxContainer/hboxcontainer_best/label_best_time
 @onready var label_optimal_time: Label = $MarginContainer/VBoxContainer/hboxcontainer_optimal/label_optimal_time
 @onready var label_sector_1: Label = $MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector1/label_sector1
 @onready var label_sector_2: Label = $MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector2/label_sector2
 @onready var label_sector_3: Label = $MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector3/label_sector3
 @onready var label_time: Label = $MarginContainer/VBoxContainer/HBoxContainer/label_time
+@onready var label_track_best_time: Label = $MarginContainer/VBoxContainer/hboxcontainer_track_best/label_track_best_time
 @onready var panelcontainer_sector_1: PanelContainer = $MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector1
 @onready var panelcontainer_sector_2: PanelContainer = $MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector2
 @onready var panelcontainer_sector_3: PanelContainer = $MarginContainer/VBoxContainer/hboxcontainer_sectors/panelcontainer_sector3
@@ -44,13 +46,13 @@ func _process(_delta: float) -> void:
 	label_time.text = tracker.laps.current._to_string()
 
 func tracker_signals_connect(t: Tracker) -> void:
-	print(t)
 	t.laps.best_changed.connect(on_best_changed)
 	t.laps.lap_ended.connect(on_lap_ended)
 	t.laps.lap_started.connect(on_lap_started)
 	t.laps.optimal_changed.connect(on_optimal_changed)
 	t.laps.sector_ended.connect(on_sector_ended)
 	t.laps.sector_started.connect(on_sector_started)
+	t.laps.track_best_changed.connect(on_track_best_changed)
 
 func tracker_signals_disconnect(t: Tracker) -> void:
 	t.laps.best_changed.disconnect(on_best_changed)
@@ -64,16 +66,16 @@ func on_best_changed(best: Lap) -> void:
 	label_best_time.text = best._to_string()
 
 func on_lap_ended(_lap: Lap, number: int) -> void:
-	visibility_best_and_optimal(true)
+	visibility_best(true)
 	
 	if number == tracker.laps.max_laps and timer_await_sector.timeout.is_connected(reset_sectors):
 		timer_await_sector.timeout.disconnect(reset_sectors)
 	timer_await_lap.start()
-	if timer_await_lap.timeout.is_connected(visibility_best_and_optimal):
-		timer_await_lap.timeout.disconnect(visibility_best_and_optimal)
+	if timer_await_lap.timeout.is_connected(visibility_best):
+		timer_await_lap.timeout.disconnect(visibility_best)
 
 func on_lap_started(_lap: Lap, _number: int) -> void:
-	timer_await_lap.timeout.connect(visibility_best_and_optimal)
+	timer_await_lap.timeout.connect(visibility_best)
 
 func on_optimal_changed(optimal: Lap) -> void:
 	label_optimal_time.text = optimal._to_string()
@@ -84,20 +86,24 @@ func on_sector_ended(sector: Sector, number: int) -> void:
 	
 	var panel_style_box: StyleBoxFlat
 	var optimal_sector: Sector = null
+	var track_best_sector: Sector = null
 	if number == 1:
 		panel_style_box = panelcontainer_sector_1.get_theme_stylebox('panel')
 		optimal_sector = tracker.laps.optimal.sectors.first if tracker.laps.optimal else null
+		track_best_sector = SS.stats.best_lap.sectors.first if SS.stats.best_lap else null
 	if number == 2:
 		panel_style_box = panelcontainer_sector_2.get_theme_stylebox('panel')
 		optimal_sector = tracker.laps.optimal.sectors.second if tracker.laps.optimal else null
+		track_best_sector = SS.stats.best_lap.sectors.second if SS.stats.best_lap else null
 	if number == 3:
 		panel_style_box = panelcontainer_sector_3.get_theme_stylebox('panel')
 		optimal_sector = tracker.laps.optimal.sectors.third if tracker.laps.optimal else null
+		track_best_sector = SS.stats.best_lap.sectors.third if SS.stats.best_lap else null
 	
 	if panel_style_box != null:
-		if optimal_sector == null:
-			panel_style_box.bg_color = color_sector_faster
-		elif sector.time < optimal_sector.time:
+		if track_best_sector == null or sector.time < track_best_sector.time:
+			panel_style_box.bg_color = color_sector_best
+		elif optimal_sector == null or sector.time < optimal_sector.time:
 			panel_style_box.bg_color = color_sector_faster
 		else:
 			panel_style_box.bg_color = color_sector_slower
@@ -111,12 +117,16 @@ func on_sector_ended(sector: Sector, number: int) -> void:
 func on_sector_started(_sector: Sector, _number: int) -> void:
 	pass
 
+func on_track_best_changed(track_best: Lap) -> void:
+	label_track_best_time.text = track_best._to_string()
+
 func reset() -> void:
 	reset_sectors()
-	visibility_best_and_optimal()
+	visibility_best()
 	label_time.text = '0:00.000'
 	label_best_time.text = '0:00.000'
 	label_optimal_time.text = '0:00.000'
+	label_track_best_time.text = SS.stats.best_lap._to_string() if SS.stats.best_lap != null else '0:00.000'
 
 func reset_sectors() -> void:
 	for panelcontainer: PanelContainer in [panelcontainer_sector_1, panelcontainer_sector_2, panelcontainer_sector_3]:
@@ -124,6 +134,7 @@ func reset_sectors() -> void:
 		if panel_style_box:
 			panel_style_box.bg_color = color_sector_default
 
-func visibility_best_and_optimal(to: bool = false) -> void:
+func visibility_best(to: bool = false) -> void:
 	hboxcontainer_best.visible = to
 	hboxcontainer_optimal.visible = to
+	hboxcontainer_track_best.visible = to

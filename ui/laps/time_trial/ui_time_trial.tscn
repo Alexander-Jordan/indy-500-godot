@@ -131,6 +131,28 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
+[node name="hboxcontainer_track_best" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_track_best"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 8
+text = "TRACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="label_track_best_time" type="Label" parent="MarginContainer/VBoxContainer/hboxcontainer_track_best"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 8
+text = "0:00.000"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
 [node name="timer_await_lap" type="Timer" parent="."]
 wait_time = 3.0
 
