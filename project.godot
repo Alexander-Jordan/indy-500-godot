@@ -13,7 +13,9 @@ config_version=5
 config/name="Indy 500"
 run/main_scene="uid://d05ej4e43kq5x"
 config/features=PackedStringArray("4.4", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/image="uid://ddo8o6fjlu0sx"
+config/icon="uid://b5eqm7boofqu7"
+boot_splash/minimum_display_time=3000
 
 [autoload]
 
